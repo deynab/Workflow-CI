@@ -2,7 +2,7 @@ FROM python:3.12.7-slim
 
 WORKDIR /app
 
-COPY MLProject/wine_preprocessing/ /app/wine_preprocessing/
+COPY MLProject/breast_cancer_preprocessing/ /app/breast_cancer_preprocessing/
 COPY MLProject/modelling.py /app/modelling.py
 
 RUN pip install --no-cache-dir \
