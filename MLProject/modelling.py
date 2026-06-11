@@ -5,39 +5,34 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
 # Load data
-X_train = pd.read_csv('wine_preprocessing/X_train.csv')
-X_test = pd.read_csv('wine_preprocessing/X_test.csv')
-y_train = pd.read_csv('wine_preprocessing/y_train.csv').squeeze()
-y_test = pd.read_csv('wine_preprocessing/y_test.csv').squeeze()
+X_train = pd.read_csv('breast_cancer_preprocessing/X_train.csv')
+X_test  = pd.read_csv('breast_cancer_preprocessing/X_test.csv')
+y_train = pd.read_csv('breast_cancer_preprocessing/y_train.csv').squeeze()
+y_test  = pd.read_csv('breast_cancer_preprocessing/y_test.csv').squeeze()
 
-# Parameter
-n_estimators = 100
-max_depth = 5
+with mlflow.start_run():
+    n_estimators = 100
+    max_depth = 5
 
-# Log parameter
-mlflow.log_param("n_estimators", n_estimators)
-mlflow.log_param("max_depth", max_depth)
+    mlflow.log_param("n_estimators", n_estimators)
+    mlflow.log_param("max_depth", max_depth)
 
-# Training
-model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth, random_state=42)
-model.fit(X_train, y_train)
+    model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth, random_state=42)
+    model.fit(X_train, y_train)
 
-# Evaluasi
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-f1 = f1_score(y_test, y_pred, average='weighted')
-precision = precision_score(y_test, y_pred, average='weighted')
-recall = recall_score(y_test, y_pred, average='weighted')
+    y_pred = model.predict(X_test)
+    accuracy  = accuracy_score(y_test, y_pred)
+    f1        = f1_score(y_test, y_pred, average='weighted')
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall    = recall_score(y_test, y_pred, average='weighted')
 
-# Log metrik
-mlflow.log_metric("accuracy", accuracy)
-mlflow.log_metric("f1_score", f1)
-mlflow.log_metric("precision", precision)
-mlflow.log_metric("recall", recall)
+    mlflow.log_metric("accuracy",  accuracy)
+    mlflow.log_metric("f1_score",  f1)
+    mlflow.log_metric("precision", precision)
+    mlflow.log_metric("recall",    recall)
 
-# Log model
-mlflow.sklearn.log_model(model, "model")
+    mlflow.sklearn.log_model(model, "model")
 
-print(f"Accuracy: {accuracy:.4f}")
-print(f"F1 Score: {f1:.4f}")
-print("CI Training selesai!")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"F1 Score: {f1:.4f}")
+    print("CI Training selesai!")
